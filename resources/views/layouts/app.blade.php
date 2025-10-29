@@ -510,6 +510,27 @@
     <!--begin::Script-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
 
+    <script
+      src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es5.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--end::Third Party Plugin(OverlayScrollbars)-->
+    <!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--end::Required Plugin(popperjs for Bootstrap 5)-->
+    <!--begin::Required Plugin(Bootstrap 5)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--end::Required Plugin(Bootstrap 5)-->
+    <!--begin::Required Plugin(AdminLTE)-->
+    <script src="{{ asset('js/adminlte.js') }}"></script>
+    <!--end::Required Plugin(AdminLTE)-->
+
     @stack('scripts')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -569,6 +590,33 @@
             // Re-run fix after a short delay to ensure all elements are loaded
             setTimeout(fixHeaderZIndex, 100);
             setTimeout(fixHeaderZIndex, 500);
+
+            // Initialize Bootstrap dropdowns manually
+            const dropdownElementList = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+            const dropdownList = [...dropdownElementList].map(dropdownToggleEl => new bootstrap.Dropdown(dropdownToggleEl));
+
+            // Ensure user dropdown works
+            const userDropdownToggle = document.querySelector('.user-dropdown-toggle');
+            if (userDropdownToggle) {
+                userDropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const dropdownMenu = this.nextElementSibling;
+                    if (dropdownMenu) {
+                        dropdownMenu.classList.toggle('show');
+                    }
+                });
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                const userDropdown = document.querySelector('.user-menu');
+                if (userDropdown && !userDropdown.contains(e.target)) {
+                    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+                    if (dropdownMenu) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                }
+            });
         });
     </script>
   </body>

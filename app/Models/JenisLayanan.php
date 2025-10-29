@@ -11,4 +11,9 @@ class JenisLayanan extends Model
     use HasFactory;
 
    protected $fillable = ['nama_layanan' , 'initial_name'];
+
+   public function layanans()
+   {
+       return $this->hasMany(Layanan::class, 'id_layanan');
+   }
 }
